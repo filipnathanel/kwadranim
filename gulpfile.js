@@ -27,9 +27,26 @@ gulp.task('styles', () => {
 gulp.task('scripts', () => {
   return gulp.src('app/scripts/**/*.js')
     .pipe($.plumber())
-    .pipe($.sourcemaps.init())
-    .pipe($.babel())
-    .pipe($.sourcemaps.write('.'))
+ .pipe(webpackStream({
+      devtool: 'source-map',
+      module: {
+        loaders: [{
+          exclude: /(node_modules|bower_components)/,
+          loader: 'babel',
+          query: {
+            presets: ['es2015']
+          }
+        },{
+          test: /\.json$/,
+          exclude: /(node_modules|bower_components)/,
+          loader: 'json'
+        }]
+      },
+      output: {
+        path: __dirname + "/",
+        filename: "main.js"
+      }
+    }))
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe(reload({stream: true}));
 });
