@@ -4,6 +4,7 @@ const gulpLoadPlugins = require('gulp-load-plugins');
 const browserSync = require('browser-sync');
 const del = require('del');
 const wiredep = require('wiredep').stream;
+const webpackStream = require('webpack-stream');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
