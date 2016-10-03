@@ -9,7 +9,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 	
 	console.log(kw);
 
-	kw.run();
+	// kw.run();
+	testPerformance('generate 5x5 particles with Image Data', function(){
+		kw.drawImageData();
+	}, {maxCycles:400}).then(function(){
+		// kw.run();
+	});
 	// 
 	
 	// kw.

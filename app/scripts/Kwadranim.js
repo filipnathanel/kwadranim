@@ -7,8 +7,6 @@ import * as utils from './utils/utils';
 import Canvas from './canvas/Canvas';
 import shadeColor from './color/shadeColor';
 
-
-
 const kwadranim = new WeakMap();
 
 export default class Kwadranim extends Canvas{
@@ -31,7 +29,7 @@ export default class Kwadranim extends Canvas{
 		this.animateLoop = this.animateLoop.bind(this);
 
 		kwadranim.set(this, {
-			particleSize: 20,
+			particleSize: 5,
 			baseColour: '9940aa'
 		});
 
@@ -73,6 +71,7 @@ export default class Kwadranim extends Canvas{
 
 		let pxInParticle = Math.pow(this.options.particleSize, 2);
 		
+
 		// loop through each row, where row is the height of particleSize
 		for( let row = 0; row < this.rowsCount; row++){
 			// console.log('row: ' + row);
@@ -80,7 +79,18 @@ export default class Kwadranim extends Canvas{
 			for( let col = 0 ; col < this.columnsCount; col++){
 				// here is where the single cell starts
 				// let's pick a color for current cell
+				// let color = this.hexToRgb(this.genRandGradient( this.options.baseColour ));
+				
+				//// quick
+				// let color = {
+				// 	r:220 * Math.random(),
+				// 	g:10,
+				// 	b:200
+				// };
+				// 
+				//slow
 				let color = this.hexToRgb(this.genRandGradient( this.options.baseColour ));
+				// 
 
 				// for each cell we need to set  
 				// console.log('col: ' + col);
@@ -95,9 +105,9 @@ export default class Kwadranim extends Canvas{
 						// console.log(px)
 						let currentPxIndex = startIndex + px * 4;
 						// console.log(currentPxIndex);
-						this.imgData.data[currentPxIndex ] = color.r 
-						this.imgData.data[currentPxIndex + 1 ] = color.g
-						this.imgData.data[currentPxIndex + 2 ] = color.b
+						this.imgData.data[currentPxIndex ] = color[0] 
+						this.imgData.data[currentPxIndex + 1 ] = color[1]
+						this.imgData.data[currentPxIndex + 2 ] = color[2]
 						this.imgData.data[currentPxIndex + 3 ] = 255;
 
 					}
@@ -131,18 +141,17 @@ export default class Kwadranim extends Canvas{
 	// Need to make it a separate module
 	genRandGradient(num) {
 	    let randomNum = Math.ceil(Math.random() * 80);
-	    let gradient = ('#' + shadeColor(num, randomNum));
+	    let gradient = shadeColor(num, randomNum);
 	    return gradient;
 	}
 	
 	// Need to make it a separate module
 	hexToRgb(hex) {
-	    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	    return result ? {
-	        r: parseInt(result[1], 16),
-	        g: parseInt(result[2], 16),
-	        b: parseInt(result[3], 16)
-	    } : null;
+		hex = '0x'  +hex;
+	    var r = hex >> 16;
+	    var g = hex >> 8 & 0xFF;
+	    var b = hex & 0xFF;
+	    return [r,g,b];
 	}
 
 }
